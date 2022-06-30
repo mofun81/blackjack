@@ -8,12 +8,14 @@ class Judge
     {
     }
 
-    public function getWinner()
+    public function getWinner(): int
     {
         // 0 引き分け 1 playerの勝ち  2 dealerの勝ち
-        if ($this->playerScore > self::MAX_SCORE) {
+        if ($this->isBurst($this->playerScore) && $this->isBurst($this->dealerScore)) {
+            return 0;
+        } elseif ($this->isBurst($this->playerScore) && $this->dealerScore <= self::MAX_SCORE) {
             return 2;
-        } elseif ($this->dealerScore > self::MAX_SCORE) {
+        } elseif ($this->isBurst($this->dealerScore) && $this->playerScore <= self::MAX_SCORE) {
             return 1;
         } elseif ($this->playerScore > $this->dealerScore) {
             return 1;
@@ -22,5 +24,10 @@ class Judge
         } elseif ($this->playerScore === $this->dealerScore) {
             return 0;
         }
+    }
+
+    public function isBurst($score): bool
+    {
+        return $score > self::MAX_SCORE;
     }
 }
